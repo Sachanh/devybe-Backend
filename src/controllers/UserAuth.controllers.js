@@ -27,9 +27,7 @@ const Registration = async (req, res) => {
         const IsUserExist = await UserSchema.findOne({ telegram_id: data.telegram_id })
         if (IsUserExist) {
 
-
-
-            if (existingUser.isBlocked) {
+            if (IsUserExist.isBlocked) {
                 return res.status(403).json({ msg: "Your account has been blocked by the admin. You cannot log in." });
             }
 
