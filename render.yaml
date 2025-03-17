@@ -1,0 +1,22 @@
+services:
+  - name: hs-backend
+    type: web
+    runtime: node
+    repo: https://github.com/Sachanh/devybe-dev.git
+    branch: main
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_VERSION
+        value: 18
+      - key: PORT
+        value: 4100
+      - key: MONGO_URL
+        sync: false
+      - key: SECRET_ACCESS_KEY
+        sync: false
+      - key: SECRET_REFRESH_KEY
+        sync: false
+        
+    plan: free
+    autoDeploy: true
