@@ -1,8 +1,8 @@
 services:
-  - name: hs-backend
+  - name: main
     type: web
     runtime: node
-    repo: https://github.com/Sachanh/devybe-dev.git
+    repo: https://github.com/Sachanh/devybe-Backend.git
     branch: main
     buildCommand: npm install
     startCommand: npm start
