@@ -104,7 +104,7 @@ if (expiredEvents.length > 0) {
 const GetAccessToken = async (req, res) => {
     const { refresh_token } = req.body
     try {
-        const decoded = jwt.verify(refresh_token, process.env.SECRET_REFRESH_KEY, { expiresIn: "15m" });
+        const decoded = jwt.verify(refresh_token, process.env.SECRET_REFRESH_KEY);
 
         if (!decoded) {
             return res.status(500).json({
@@ -113,6 +113,7 @@ const GetAccessToken = async (req, res) => {
             })
         }
         const userID = decoded.userID
+        console.log('check what getting-------',userID);
         const access_token = jwt.sign({ userID }, process.env.SECRET_ACCESS_KEY, { expiresIn: "15m" });
 
         res.status(200).json({
@@ -132,8 +133,8 @@ const GetAccessToken = async (req, res) => {
 // user info
 const GetUserInfo = async (req, res) => {
     try {
-        const user_data = await UserSchema.findOne({ _id: req.user_detail._id }, { telegram_id: 0 }).populate("Categories")
-        .populate("events");;
+        const user_data = await UserSchema.findOne({ _id: req.user_detail._id }, { telegram_id: 0 ,role:0}).populate("selectedCategories")
+        .populate("selectedEvents");;
  
         if (!user_data) {
             return res.status(404).json({
@@ -197,6 +198,7 @@ const Update_user_avatar=async (req, res) => {
     try {
         const userId = req.user_detail._id;
 
+
         if (!req.file) {
             return res.status(400).json({ msg: 'Avatar image is required' });
         }
@@ -205,6 +207,8 @@ const Update_user_avatar=async (req, res) => {
         if (!user) {
             return res.status(404).json({ msg: 'User not found' });
         }
+
+
 
         const result = await cloudinary.uploader.upload(req.file.path, {
             folder: 'avatars',
