@@ -7,7 +7,7 @@ const { checkBlockedUser } = require("../middlewares/Autherization.middlewares")
 
 
 UserAuthRouter.post('/register',Registration)
-UserAuthRouter.post('/token',verifyToken,checkBlockedUser , GetAccessToken)
+UserAuthRouter.post('/token' , GetAccessToken)
 UserAuthRouter.get('/',verifyToken ,checkBlockedUser, GetUserInfo)
 UserAuthRouter.patch('/update',verifyToken,checkBlockedUser,Update_User_Info)
 UserAuthRouter.put('/update-avatar',verifyToken,checkBlockedUser, upload.single('avatar'), processImage ,Update_user_avatar);
