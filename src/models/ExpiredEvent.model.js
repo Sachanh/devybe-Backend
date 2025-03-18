@@ -70,29 +70,35 @@ eventType:{
     required:[true , "select atleast one option "]
 },
 
-eventDate:{
-type:Date,
-required:[true , "Date is required"],
-
-validate:{
-    validator:function(date){
-       return  date>  new Date();
-    },
-    msg: "Date must be of Future"
-}
-
-
+eventDate: {
+    type: Date,
+    required: [true, "Date is required"]
 },
 
-eventTime: { 
-    type: String, 
+eventStartTime: {
+    type: String,
     required: true,
     validate: {
-        validator: function(value) {
-            return /^([01]\d|2[0-3]):([0-5]\d)$/.test(value);
+        validator: (value) => /^([01]\d|2[0-3]):([0-5]\d)$/.test(value),
+        message: "Time must be in HH:mm format (24-hour).",
+    },
+},
+
+
+eventEndTime: {
+    type: String,
+    required: true,
+    validate: {
+        validator: function (value) {
+            if (!/^([01]\d|2[0-3]):([0-5]\d)$/.test(value)) {
+                return false; 
+            }
+            if (!this.eventStartTime) return false; 
+            
+            return value > this.eventStartTime; 
         },
-        message: "Time must be in HH:mm format (24-hour)."
-    }
+        message: "Event end time must be in HH:mm format and later than event start time.",
+    },
 },
 
 categoryRefer:{

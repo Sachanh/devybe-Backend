@@ -18,13 +18,10 @@ const moveExpiredEvents = async () => {
 };
 
 // Schedule the job to run at midnight every day
-// cron.schedule("0 0 * * *", moveExpiredEvents, {
-//     scheduled: true,
-//     timezone: "Asia/Kolkata",
-// });
-
-cron.schedule("* * * * *", moveExpiredEvents, {
+cron.schedule("0 0 * * *", moveExpiredEvents, {
     scheduled: true,
     timezone: "Asia/Kolkata",
 });
+
+
 module.exports = moveExpiredEvents;
