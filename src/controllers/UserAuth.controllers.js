@@ -33,7 +33,7 @@ const Registration = async (req, res) => {
 
             userID = IsUserExist._id
 
-            access_token = jwt.sign({ userID }, process.env.SECRET_ACCESS_KEY, { expiresIn: "15m" });
+            access_token = jwt.sign({ userID }, process.env.SECRET_ACCESS_KEY, { expiresIn: "7d" });
             refresh_token = jwt.sign({ userID }, process.env.SECRET_REFRESH_KEY, { expiresIn: "7d" })
 
             return res.status(201).json({
@@ -41,6 +41,7 @@ const Registration = async (req, res) => {
                 x_auth_access_token: access_token,
                 x_auth_refresh_token: refresh_token,
                 x_userid: userID,
+                is_newUser:false
             })
         }
 
@@ -76,7 +77,7 @@ if (expiredEvents.length > 0) {
         await AddData.save()
 
         userID = AddData._id;
-        access_token = jwt.sign({ userID }, process.env.SECRET_ACCESS_KEY, { expiresIn: "15m" });
+        access_token = jwt.sign({ userID }, process.env.SECRET_ACCESS_KEY, { expiresIn: "7d" });
         refresh_token = jwt.sign({ userID }, process.env.SECRET_REFRESH_KEY, { expiresIn: "7d" })
 
         res.setHeader("x-auth-access-token", `Bearer ${access_token}`);
@@ -88,7 +89,7 @@ if (expiredEvents.length > 0) {
             x_auth_access_token: access_token,
             x_auth_refresh_token: refresh_token,
             x_userid: userID,
-            x_status: true
+            is_newUser: true
         });
 
     } catch (error) {
@@ -118,7 +119,8 @@ const GetAccessToken = async (req, res) => {
 
         res.status(200).json({
             success:true ,
-            message: access_token
+            access_token: access_token,
+            msg:"token created successfully"
         })
 
     } catch (error) {

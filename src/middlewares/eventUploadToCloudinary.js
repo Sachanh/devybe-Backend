@@ -2,6 +2,8 @@ const fs = require('fs');
 const cloudinary = require('../config/cloudinary');
 
 const eventUploadToCloudinary = async (req, res, next) => {
+
+
     try {
         if (!req.files || req.files.length === 0) {
             return res.status(400).json({ msg: 'At least one event image is required' });
