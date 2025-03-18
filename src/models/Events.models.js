@@ -115,11 +115,11 @@ const EventSchema = new Schema(
             required: true,
         },
 
-        registerUser:{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User",
-            required: true,
-        }
+        // registerUser:{
+        //     type: mongoose.Schema.Types.ObjectId,
+        //     ref: "User",
+        //     required: true,
+        // }
     },
     {
         versionKey: false,
