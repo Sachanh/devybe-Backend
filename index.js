@@ -18,12 +18,14 @@ const app=express()
 app.use(express.json())
 app.use(morgan('combined'));
 moveExpiredEvents() //cron for check which event is expire
+const allowedOrigins = [
+    'http://localhost:5173',
+    'http://localhost:3000'
+];
+
 app.use(cors({
     origin: (origin, callback) => {
-        // const allowedLocalhost = /^http:\/\/localhost(:\d+)?$/; 
-        const allowedLocalhost=/^http:\/\/localhost(5173|3000)?$/;
-
-        if (!origin || allowedLocalhost.test(origin)) {
+        if (!origin || allowedOrigins.includes(origin)) {
             callback(null, true);
         } else {
             callback(new Error('Not allowed by CORS'));
@@ -33,7 +35,6 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
 }));
-
 app.options('*', cors()); // added for handle preflight request from 5173 or 3000 port
 
 
