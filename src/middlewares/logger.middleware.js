@@ -3,7 +3,6 @@ const LogModel = require('../models/Logs.models');
 
 const logger = async (req, res, next) => {
 
-
     const logEntry = new LogModel({
         ip: req.ip,
         method: req.method,

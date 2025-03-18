@@ -9,6 +9,9 @@ const cloudinary=require('../config/cloudinary')
 
 
 
+
+
+
 // user registration ----------
 const Registration = async (req, res) => {
     const data = req.body
