@@ -103,7 +103,7 @@ const blockUser = async (req, res) => {
 // all blocked user
 const getBlockedUsers = async (req, res) => {
   try {
-      const blockedUsers = await UserSchema.find({ isBlocked: true }).populate("blockedBy", "first_name", "last_name", "telegram_id");
+      const blockedUsers = await UserSchema.find({ isBlocked: true }).select("first_name last_name telegram_id avatar")
 
       if (blockedUsers.length === 0) {
           return res.status(404).json({

@@ -17,6 +17,7 @@ const app=express()
 // middlewares
 app.use(express.json())
 app.use(morgan('combined'));
+app.use(express.urlencoded({ extended: true }));
 moveExpiredEvents() //cron for check which event is expire
 app.use(cors({
     origin: (origin, callback) => {
