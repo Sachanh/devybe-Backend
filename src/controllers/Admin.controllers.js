@@ -6,7 +6,7 @@ const EventSchema = require('../models/Events.models')
 const AddCategoriesByAdmin = async (req, res) => {
     try {
       const data = req.body;
-  
+      console.log('User detail heree',req.user_detail._id)
       const user = await UserSchema.findById(req.user_detail._id);
       if (!user) {
         return res.status(404).json({
