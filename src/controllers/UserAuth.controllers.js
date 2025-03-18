@@ -214,32 +214,33 @@ const Update_user_avatar=async (req, res) => {
         }
 
 
+ // Deleting previous avatar from Cloudinary if exists
+ if (user.avatar_public_id) {
+    await cloudinary.uploader.destroy(user.avatar_public_id);
+}
 
-        const result = await cloudinary.uploader.upload(req.file.path, {
-            folder: 'avatars',
-            public_id: `avatar-${userId}-${Date.now()}`,
-            overwrite: true,
-            resource_type: 'image'
-        });
-
-// deleteing previous avatar
-     if (user.avatar) {
-        const publicId = user.avatar.split('/').pop().split('.')[0];
-        await cloudinary.uploader.destroy(publicId);
-    }
-
-    // Removing file from local after upload
-    fs.unlinkSync(req.file.path);
+// Upload new avatar to Cloudinary
+const result = await cloudinary.uploader.upload(req.file.path, {
+    folder: 'avatars',
+    public_id: `avatar-${userId}-${Date.now()}`,
+    overwrite: true,
+    resource_type: 'image'
+});
 
 
-    user.avatar = result.secure_url;
-    await user.save();
 
+// Removing file from local after upload
+fs.unlinkSync(req.file.path);
 
-    // delete rest thing coming from data base
-    const updated_user = user.toObject();
-    delete updated_user.role;
-    delete updated_user.__v;
+// Updating user data
+user.avatar = result.secure_url;
+user.avatar_public_id = result.public_id;  // Storing public_id for future delete
+await user.save();
+
+// Removing unwanted fields before sending response
+const updated_user = user.toObject();
+delete updated_user.role;
+delete updated_user.__v;
 
         return res.status(200).send({ msg: 'Avatar updated successfully', data: updated_user });
     } catch (error) {

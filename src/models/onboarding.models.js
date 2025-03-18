@@ -50,7 +50,9 @@ const UserSchema = new mongoose.Schema({
           ref: "event",
         },
       ],
-
+      avatar_public_id: {
+        type:String
+      },
 },
     {
         versionKey: false,
