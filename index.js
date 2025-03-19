@@ -18,11 +18,26 @@ const app=express()
 app.use(express.json())
 app.use(morgan('combined'));
 moveExpiredEvents() //cron for check which event is expire
+
 const allowedOrigins = [
     'http://localhost:5173',
-    'http://localhost:3000'
+    'http://localhost:3000',
+    'https://devybe-backend.onrender.com' 
 ];
 
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", allowedOrigins.includes(req.headers.origin) ? req.headers.origin : "http://localhost:3000");
+    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, OPTIONS");
+    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+    res.header("Access-Control-Allow-Credentials", "true");
+
+    if (req.method === "OPTIONS") {
+        return res.sendStatus(200);
+    }
+    next();
+});
+
+// Use CORS middleware after setting headers manually
 app.use(cors({
     origin: (origin, callback) => {
         if (!origin || allowedOrigins.includes(origin)) {
@@ -31,10 +46,9 @@ app.use(cors({
             callback(new Error('Not allowed by CORS'));
         }
     },
-    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
 }));
+
 app.options('*', cors()); // added for handle preflight request from 5173 or 3000 port
 
 
