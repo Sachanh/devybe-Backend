@@ -7,7 +7,7 @@ const logger=require('./src/middlewares/logger.middleware')
 const morgan = require('morgan');
 const AdminRoutes = require("./src/routes/Admin.routes");
 const moveExpiredEvents = require("./src/services/cron_node");
-const rateLimitMiddleware=require("./src/middlewares/RateLimiter.middleware")
+// const rateLimitMiddleware=require("./src/middlewares/RateLimiter.middleware")
 // define port
 const Port = process.env.PORT ;
 
@@ -20,11 +20,12 @@ app.use(express.json())
 app.use(morgan('combined'));
 app.use(logger)
 app.use(express.urlencoded({ extended: true }));
-app.use(rateLimitMiddleware)
+// app.use(rateLimitMiddleware)
 moveExpiredEvents() //cron for check which event is expire
 const allowedOrigins = [
     'http://localhost:5173',
-    'http://localhost:3000'
+    'http://localhost:3000',
+    '*'
 ];
 
 app.use(cors({
