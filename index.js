@@ -26,11 +26,8 @@ moveExpiredEvents() //cron for check which event is expire
 const allowedOrigins = [
     'http://localhost:5173',
     'http://localhost:3000',
-<<<<<<< HEAD
+    'https://devybe-backend.onrender.com' ,
     '*'
-=======
-    'https://devybe-backend.onrender.com' 
->>>>>>> 0698cced774d17ae3f4eefc629c7068e3917e971
 ];
 
 app.use((req, res, next) => {
