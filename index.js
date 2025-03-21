@@ -27,6 +27,7 @@ const allowedOrigins = [
     'http://localhost:5173',
     'http://localhost:3000',
     'https://devybe-backend.onrender.com' ,
+  "  http://localhost:5174",
     '*'
 ];
 

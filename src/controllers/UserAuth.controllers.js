@@ -44,6 +44,7 @@ const Registration = async (req, res) => {
                 x_auth_access_token: access_token,
                 x_auth_refresh_token: refresh_token,
                 x_userid: userID,
+                first_name:IsUserExist.first_name,
                 is_newUser:false
             })
         }
@@ -92,6 +93,7 @@ if (expiredEvents.length > 0) {
             x_auth_access_token: access_token,
             x_auth_refresh_token: refresh_token,
             x_userid: userID,
+            first_name:AddData.first_name,
             is_newUser: true
         });
 
@@ -372,6 +374,47 @@ res.status(200).json({
     }
 }
 
+// register event
+const registerEvent = async (req, res) => {
+    try {
+      const { eventId } = req.body; // frontend should send { eventId: "eventMongoId" }
+      const userId = req.user_detail._id;
+  
+      // Find the user
+      const user = await UserSchema.findById(userId);
+      if (!user) {
+        return res.status(404).json({ msg: 'User not found' });
+      }
+  
+      // Check if event exists
+      const event = await categorySchema.findById(eventId);
+      if (!event) {
+        return res.status(404).json({
+          success: false,
+          msg: "Event not present or may have expired!"
+        });
+      }
+  
+      // Optional: Check if already registered
+      if (user.registeredEvents.includes(eventId)) {
+        return res.status(400).json({ msg: "Already registered for this event" });
+      }
+  
+      // Push the event ID into user's registeredEvents array
+      user.registeredEvents.push(eventId);
+      await user.save();
+  
+      return res.status(200).json({
+        success: true,
+        msg: "Event registered successfully",
+        registeredEvents: user.registeredEvents
+      });
+  
+    } catch (err) {
+      console.error(err);
+      return res.status(500).json({ msg: "Server Error" });
+    }
+  };
+  
 
-
-module.exports = { Registration, GetAccessToken, GetUserInfo ,Update_User_Info , Update_user_avatar,GetAllCategories,addCategory,GetEvents}
+module.exports = { Registration, GetAccessToken, GetUserInfo ,Update_User_Info , Update_user_avatar,GetAllCategories,addCategory,GetEvents,registerEvent}

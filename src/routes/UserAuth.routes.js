@@ -1,7 +1,7 @@
 const {Router}=require("express")
 const rateLimit = require('express-rate-limit');
 const UserAuthRouter=Router()
-const {Registration, GetAccessToken, GetUserInfo, Update_User_Info ,Update_user_avatar, GetAllCategories, addCategory, GetEvents} =require("../controllers/UserAuth.controllers")
+const {Registration, GetAccessToken, GetUserInfo, Update_User_Info ,Update_user_avatar, GetAllCategories, addCategory, GetEvents, registerEvent} =require("../controllers/UserAuth.controllers")
 const { verifyToken } = require("../middlewares/Auth.middleware")
 const {upload, processImage}=require("../utils/Multer.utils")
 const { checkBlockedUser } = require("../middlewares/Autherization.middlewares")
@@ -26,7 +26,7 @@ UserAuthRouter.put('/update-avatar',verifyToken,checkBlockedUser,updateAvatarLim
 UserAuthRouter.get("/categories",verifyToken,checkBlockedUser,GetAllCategories)
 UserAuthRouter.patch("/categories",verifyToken,checkBlockedUser,addCategory)
 UserAuthRouter.get("/events",verifyToken,checkBlockedUser,GetEvents)
-
+UserAuthRouter.patch('/events',verifyToken,checkBlockedUser,registerEvent)
 
 module.exports=UserAuthRouter
 
